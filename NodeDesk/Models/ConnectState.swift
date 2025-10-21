@@ -7,7 +7,6 @@
 
 enum ConnectState: String, CaseIterable {
     case idle = "Bereit"
-    case resolvingDNS = "DNS auflösen..."
     case connecting = "Verbinden..."
     case authenticating = "Authentifiziere..."
     case fetchingData = "Hole Daten..."

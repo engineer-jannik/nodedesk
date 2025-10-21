@@ -53,10 +53,9 @@ struct ConnectingView: View {
     private var progress: Double {
         switch state {
         case .idle: return 0
-        case .resolvingDNS: return 0.2
-        case .connecting: return 0.4
-        case .authenticating: return 0.6
-        case .fetchingData: return 0.8
+        case .connecting: return 0.25
+        case .authenticating: return 0.5
+        case .fetchingData: return 0.75
         case .success: return 1.0
         case .failed: return 1.0
         }

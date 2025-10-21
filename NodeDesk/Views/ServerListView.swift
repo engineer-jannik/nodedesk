@@ -168,3 +168,4 @@ struct EditServerView: View {
         .frame(width: 320)
     }
 }
+

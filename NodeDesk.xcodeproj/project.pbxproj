@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C7045FE12EA7B8FE00F812D2 /* PostgresKit in Frameworks */ = {isa = PBXBuildFile; productRef = C7045FE02EA7B8FE00F812D2 /* PostgresKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C76C54652EA75D800036965F /* NodeDesk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeDesk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7045FE12EA7B8FE00F812D2 /* PostgresKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = NodeDesk;
 			packageProductDependencies = (
+				C7045FE02EA7B8FE00F812D2 /* PostgresKit */,
 			);
 			productName = NodeDesk;
 			productReference = C76C54652EA75D800036965F /* NodeDesk.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = C76C545C2EA75D800036965F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C7045FDF2EA7B8FD00F812D2 /* XCRemoteSwiftPackageReference "postgres-kit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C76C54662EA75D800036965F /* Products */;
 			projectDirPath = "";
@@ -252,7 +261,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -282,7 +301,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -325,6 +354,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C7045FDF2EA7B8FD00F812D2 /* XCRemoteSwiftPackageReference "postgres-kit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/postgres-kit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.14.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C7045FE02EA7B8FE00F812D2 /* PostgresKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7045FDF2EA7B8FD00F812D2 /* XCRemoteSwiftPackageReference "postgres-kit" */;
+			productName = PostgresKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C76C545D2EA75D800036965F /* Project object */;
 }
