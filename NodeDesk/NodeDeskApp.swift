@@ -21,8 +21,6 @@ struct NodeDeskApp: App {
                     ServerListView(isConnecting: $isConnecting, isConnected: $isConnected)
                 } else if isConnecting.name != "STARTUP_DEFAULT" {
                     ConnectingTestView(server: $isConnecting)
-                } else if isConnected .name != "STARTUP_DEFAULT" {
-                    LoginView(isLoggedIn: $isLoggedIn)
                 } else if isLoggedIn {
                     EmptyView()
                 }

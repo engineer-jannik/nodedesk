@@ -1,15 +1,13 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Binding var isLoggedIn: Bool
-
-    @State private var email = ""
-    @State private var password = ""
-    @State private var isLoading = false
-    @State private var showError = false
-    @State private var errorMessage = ""
+    @Binding var showLogin: Bool
+    @Binding var currentState: ConnectState
+    @Binding var server: Server
 
     @FocusState private var focusedField: Field?
+    @State var showError: Bool = false
+    @State var isLoading: Bool = false
 
     enum Field { case email, password }
 
@@ -21,35 +19,17 @@ struct LoginView: View {
 
             VStack(spacing: 20) {
                 Spacer()
-
-                VStack(spacing: 6) {
-                    Image(systemName: "briefcase.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 72, height: 72)
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, .blue)
-                        .shadow(radius: 8)
-
-                    Text("OwnLance")
-                        .font(.system(size: 36, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
-
-                    Text("Deine Freelance-Zentrale")
-                        .foregroundColor(.white.opacity(0.9))
-                }
-                .multilineTextAlignment(.center)
-
                 VStack(spacing: 12) {
-                    TextField("E-Mail", text: $email)
+                    TextField("Benutzername", text: $server.username)
                         .textFieldStyle(.roundedBorder)
                         .focused($focusedField, equals: .email)
                         .submitLabel(.next)
+                        .disabled(!server.username.isEmpty)
                         .onSubmit {
                             focusedField = .password
                         }
 
-                    SecureField("Passwort", text: $password)
+                    SecureField("Passwort", text: $server.password)
                         .textFieldStyle(.roundedBorder)
                         .focused($focusedField, equals: .password)
                         .submitLabel(.go)
@@ -81,13 +61,6 @@ struct LoginView: View {
                 .disabled(isLoading)
                 .padding(.horizontal, 40)
 
-                if showError {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .font(.footnote)
-                        .padding(.top, 6)
-                }
-
                 Spacer()
 
                 HStack {
@@ -101,27 +74,16 @@ struct LoginView: View {
     }
 
     private func login() {
-        guard !email.isEmpty, !password.isEmpty else {
-            withAnimation {
-                errorMessage = "Bitte alle Felder ausfüllen."
-                showError = true
-            }
-            return
-        }
-
-        showError = false
         isLoading = true
-
-        // Fake login delay -> replace with your auth call
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+        ProxmoxProvider.shared.login(server: server) { result in
             isLoading = false
-            if email.lowercased() == "admin" && password == "123" {
-                withAnimation { isLoggedIn = true }
+            
+            if(result) {
+                currentState = .fetchingData
+                showLogin = false
             } else {
-                withAnimation {
-                    errorMessage = "E-Mail oder Passwort falsch."
-                    showError = true
-                }
+                currentState = .failed
+                showLogin = false
             }
         }
     }

@@ -36,42 +36,49 @@ struct ServerListView: View {
 
                     // 📋 Liste
                     List {
-                        ForEach(store.filteredServers) { server in
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(server.name)
-                                        .font(.headline)
-                                    Text(server.address)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
+                        let groupedServers = Dictionary(grouping: store.filteredServers, by: { $0.company })
 
-                                Spacer()
+                        ForEach(groupedServers.keys.sorted(), id: \.self) { company in
+                            Section(header: Text(company).bold()) {
+                                ForEach(groupedServers[company] ?? []) { server in
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            Text(server.name)
+                                                .font(.headline)
+                                            Text(server.address)
+                                                .font(.subheadline)
+                                                .foregroundColor(.secondary)
+                                        }
 
-                                // 🔌 Connect
-                                Button {
-                                    connect(to: server)
-                                } label: {
-                                    Image(systemName: "bolt.horizontal.circle")
-                                        .imageScale(.large)
-                                        .foregroundColor(.green)
-                                }
-                                .buttonStyle(.plain)
-                                .help("Mit Server verbinden")
+                                        Spacer()
 
-                                // ✏️ Bearbeiten
-                                Button {
-                                    editingServer = server
-                                } label: {
-                                    Image(systemName: "pencil.circle")
-                                        .imageScale(.large)
-                                        .foregroundColor(.blue)
+                                        // 🔌 Connect
+                                        Button {
+                                            connect(to: server)
+                                        } label: {
+                                            Image(systemName: "bolt.horizontal.circle")
+                                                .imageScale(.large)
+                                                .foregroundColor(.green)
+                                        }
+                                        .buttonStyle(.plain)
+                                        .help("Mit Server verbinden")
+
+                                        // ✏️ Bearbeiten
+                                        Button {
+                                            editingServer = server
+                                        } label: {
+                                            Image(systemName: "pencil.circle")
+                                                .imageScale(.large)
+                                                .foregroundColor(.blue)
+                                        }
+                                        .buttonStyle(.plain)
+                                        .help("Server bearbeiten oder löschen")
+                                    }
+                                    .padding(.vertical, 4)
                                 }
-                                .buttonStyle(.plain)
-                                .help("Server bearbeiten oder löschen")
                             }
-                            .padding(.vertical, 4)
                         }
+
                     }
                     .listStyle(.inset)
                 }
@@ -135,12 +142,12 @@ struct EditServerView: View {
         VStack(alignment: .leading, spacing: 12) {
             Section("Serverinformationen") {
                 TextField("Servername", text: $server.name)
+                TextField("Unternehmen", text: $server.company)
                 TextField("Adresse", text: $server.address)
             }
             
-            Section("Datenbank-Login") {
-                TextField("Benutzername", text: $server.dbuser)
-                SecureField("Passwort", text: $server.dbpassword)
+            Section("Proxmox-Login") {
+                TextField("Benutzername", text: $server.username)
             }
 
             HStack {

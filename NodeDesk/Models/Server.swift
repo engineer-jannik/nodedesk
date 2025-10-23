@@ -11,7 +11,8 @@ import SwiftUI
 struct Server: Identifiable, Codable, Equatable {
     var id = UUID()
     var name: String
+    var company: String = "None"
     var address: String
-    var dbuser: String = ""
-    var dbpassword: String = ""
+    var username: String = ""
+    var password: String = "NONE_OF_YOUR_BUSINESS"
 }
