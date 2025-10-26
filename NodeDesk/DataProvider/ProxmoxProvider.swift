@@ -45,13 +45,12 @@ final class ProxmoxProvider {
     func login(server: Server, completion: @escaping (Bool) -> Void) {
         let loginURL = "https://\(server.address):8006/api2/json/access/ticket"
         let body = "username=\(server.username)&password=\(server.password)"
-        print(body)
         
         let process = Process()
         let pipe = Pipe()
         
         process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        process.arguments = ["curl", "-s", "-k", "-X", "POST", loginURL,
+        process.arguments = ["curl", "-s", "-k", "--connect-timeout", "5", "-X", "POST", loginURL,
                              "-H", "Content-Type: application/x-www-form-urlencoded",
                              "--data", body]
         process.standardOutput = pipe
@@ -69,6 +68,8 @@ final class ProxmoxProvider {
             completion(false)
             return
         }
+        
+        print(jsonString)
                 
         do {
             if let json = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
@@ -91,13 +92,13 @@ final class ProxmoxProvider {
             return
         }
         
-        let fullURL = "https://\(server.address):8006/api2/json/\(endpoint)"
+        let fullURL = "https://\(server.address):8006/api2/json\(endpoint)"
         
         let process = Process()
         let pipe = Pipe()
         
         process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        process.arguments = ["curl", "-s", "-k", "-X", "GET", fullURL,
+        process.arguments = ["curl", "-s", "-k", "--connect-timeout", "5", "-X", "GET", fullURL,
                              "-H", "Cookie: PVEAuthCookie=\(cookie)"]
         process.standardOutput = pipe
         

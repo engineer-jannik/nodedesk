@@ -14,5 +14,5 @@ struct Server: Identifiable, Codable, Equatable {
     var company: String = "None"
     var address: String
     var username: String = ""
-    var password: String = "NONE_OF_YOUR_BUSINESS"
+    var password: String = ""
 }
