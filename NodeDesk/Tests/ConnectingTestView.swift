@@ -26,9 +26,26 @@ struct ConnectingTestView: View {
                 LoginView(showLogin: $showLogin, currentState: $currentState, server: $server)
             }
     }
-
+    
     /// Läuft alle States durch und verbindet bei fetchingData
     private func runDemoStates() {
+        if server.address == "test.node-desk.dev" {
+            ProxmoxCache.shared.cache(ProxmoxCluster(id: "nodedesk-test-cluster", name: "nodedesk-test-cluster"))
+            
+            for i in 1..<4 {
+                ProxmoxCache.shared.cache(ProxmoxNode(id: i, name: "node-\(i)", ip: "192.168.0.20\(i)", status: "online", uptime: Int.random(in: 510000...1000000)))
+            }
+            
+            for i in 1..<20 {
+                let nodeNumber = ((i - 1) % 3) + 1
+                
+                ProxmoxCache.shared.cache(ProxmoxVM(id: 100 + i, name: "vm-\(100 + i)", node: "node-\(nodeNumber)", status: i == 1 ? "offline" : "online", uptime: Int.random(in: 510000...1000000), tags: ["node-\(nodeNumber)", "nodedesk-test"]))
+            }
+            
+            showDashboard = true
+            return
+        }
+        
         Task {
             let states = ConnectState.allCases
             var delay: Double = 0
@@ -76,9 +93,7 @@ struct ConnectingTestView: View {
                     var gettedVMs: Bool = false
                     
                     // Get Cluster & Nodes
-                    ProxmoxProvider.shared.sendAuthenticatedRequest(to: "/cluster/status", server: server) { result in
-                        print(result)
-                        
+                    ProxmoxProvider.shared.sendAuthenticatedRequest(to: "/cluster/status", server: server) { result in                        
                         guard let result = result, !result.isEmpty else {
                             currentState = .failed
                             return

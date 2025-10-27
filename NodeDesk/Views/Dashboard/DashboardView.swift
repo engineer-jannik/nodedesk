@@ -245,18 +245,93 @@ struct VMDetailView: View {
     let nodeName: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("VM: \(vm.name)")
-                .font(.largeTitle.bold())
-            
-            Text("Node: \(nodeName)")
-                .foregroundColor(.secondary)
-            
-            //Text("IP: \(vm.ip)")
-            
-            Spacer()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                
+                // Header
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text(vm.name)
+                                .font(.largeTitle.bold())
+                            Text("\(vm.uptimeFormatted())")
+                                .font(.subheadline)
+                            
+                            Spacer()
+                            StatusBadge(status: vm.status)
+                        }
+                        
+                        HStack {
+                            ForEach(vm.tags, id: \.self) { tag in
+                                Text(tag)
+                                    .font(.caption.bold())
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 6)
+                                    .background(.gray.opacity(0.2))
+                                    .foregroundColor(.gray)
+                                    .cornerRadius(10)
+                            }
+                        }
+                    }
+                }
+                
+                // Resource Overview
+                VStack(spacing: 16) {
+                    ResourceBarView(title: "CPU Usage", value: Double(vm.cpu), max: 1.0, color: .blue)
+                    ResourceBarView(title: "Memory Usage", value: Double(vm.memory), max: Double(vm.maxmemory), color: .green)
+                    ResourceBarView(title: "Storage Usage", value: Double(vm.disk), max: Double(vm.maxdisk), color: .orange)
+                }
+                .padding()
+                .background(.thinMaterial)
+                .cornerRadius(16)
+                .shadow(radius: 4)
+                
+                Divider().padding(.vertical, 10)
+                
+                // Action Buttons
+                HStack(spacing: 16) {
+                    Button(action: { print("Start VM") }) {
+                        Label("Start", systemImage: "arrowtriangle.forward.circle")
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                    }
+                    .disabled(vm.status == "online")
+                    .buttonStyle(.bordered)
+                    .tint(.blue)
+                    Button(action: { print("Restart VM") }) {
+                        Label("Restart", systemImage: "arrow.clockwise.circle.fill")
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                    }
+                    .disabled(vm.status != "online")
+                    .buttonStyle(.bordered)
+                    .tint(.blue)
+                    Button(action: { print("Shutdown VM") }) {
+                        Label("Shutdown", systemImage: "power.circle.fill")
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                    }
+                    .disabled(vm.status != "online")
+                    .buttonStyle(.bordered)
+                    .tint(.red)
+                    
+                    Button(action: { print("Stop VM") }) {
+                        Label("Stop (Force)", systemImage: "stop.circle.fill")
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                    }
+                    .disabled(vm.status != "online")
+                    .buttonStyle(.bordered)
+                    .tint(.red)
+                }
+            }
+            .padding()
         }
-        .padding()
+        .navigationTitle("VM Details")
     }
 }
 

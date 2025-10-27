@@ -17,6 +17,7 @@ struct ProxmoxVM: Codable {
     var disk: Int = 0
     var maxdisk: Int = 0
     var uptime: Int = 0
+    var tags: [String] = []
     
     func uptimeFormatted() -> String {
             let totalSeconds = uptime
