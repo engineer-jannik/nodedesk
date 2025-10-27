@@ -149,7 +149,7 @@ struct ConnectingTestView: View {
                                 nodeVar?.maxdisk = node["maxdisk"] as? Int ?? 0
                                 
                                 // Set Uptime data
-                                nodeVar?.uptime = node["uptime"] as? Double ?? 0
+                                nodeVar?.uptime = node["uptime"] as? Int ?? 0
                                 ProxmoxCache.shared.cache(nodeVar!)
                             }
                             gettedNodes = true
@@ -179,7 +179,15 @@ struct ConnectingTestView: View {
                                 ProxmoxCache.shared.cache(ProxmoxVM(
                                     id: vm["vmid"] as! Int,
                                     name: vm["name"] as! String,
-                                    node: vm["node"] as! String
+                                    node: vm["node"] as! String,
+                                    status: vm["status"] as! String,
+                                    cpu: Float(vm["cpu"] as! Double),
+                                    maxcpu: vm["maxcpu"] as! Int,
+                                    memory: vm["memory"] as! Int,
+                                    maxmemory: vm["maxmemory"] as! Int,
+                                    disk: vm["disk"] as! Int,
+                                    maxdisk: vm["maxdisk"] as! Int,
+                                    uptime: vm["uptime"] as! Int
                                 ))
                             }
                             gettedNodes = true

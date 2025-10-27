@@ -16,10 +16,10 @@ struct ProxmoxNode: Codable {
     var maxmemory: Int = 0
     var disk: Int = 0
     var maxdisk: Int = 0
-    var uptime: Double = 0
+    var uptime: Int = 0
     
     func uptimeFormatted() -> String {
-            let totalSeconds = Int(uptime)
+            let totalSeconds = uptime
             let days = totalSeconds / 86_400
             let hours = (totalSeconds % 86_400) / 3_600
             let minutes = (totalSeconds % 3_600) / 60
